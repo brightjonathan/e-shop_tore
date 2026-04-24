@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "e-commerce App",
+  title: "e-commerce app",
   description: "this is an e-commerce app built with Next.js 13 and Tailwind CSS",
 };
 
