@@ -1,2 +1,34 @@
-"user server"
+"use server"
 
+import { revalidatePath } from "next/cache";
+import { createClient } from "../superbase/server";
+import { emailValidationSchema } from "../zodvalidation/Form_validation";
+
+
+//
+export const login = async (formData: FormData)=>{
+  const supabase = await createClient();
+  // check email
+  const email = formData.get("email") as string;
+
+  const emailValidation = emailValidationSchema.safeParse({ email: email });
+  if (!emailValidation.success) {
+    console.log("Invalid email format");
+    return;
+  }
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email: email,
+    options: {
+      shouldCreateUser: true,
+    },
+  });
+
+  if (error) {
+    console.log("Got errort signing in--->", error);
+    revalidatePath("/");
+    return { error: error.message };
+  }
+
+  revalidatePath("/");
+}

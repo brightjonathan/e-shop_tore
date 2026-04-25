@@ -1,5 +1,8 @@
 "use client";
 
+import { login } from "@/lib/Actions/userAuth.action";
+import { emailValidationSchema } from "@/lib/zodvalidation/Form_validation";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -21,8 +24,38 @@ const LoginUser = () => {
 
 
     const handleLogin = async () => {
-        //handles the login logic here
+  try {
+    setLoading(true);
+
+    const emailCheck = emailValidationSchema.safeParse({ email });
+
+    if (!emailCheck.success) {
+      toast.error("Please enter a valid email address");
+      return;
     }
+
+    const formData = new FormData();
+    formData.append("email", email);
+
+    const loginUser = await login(formData);
+
+    console.log("LOGIN RESPONSE:", loginUser); // 🔍 debug
+
+    if (loginUser?.error) {
+      toast.error(loginUser.error || "Something went wrong");
+      return;
+    }
+
+    setTokenPart(true);
+    toast.success("Check your email for the login link!");
+
+  } catch (error) {
+    console.error(error);
+    toast.error("Unexpected error occurred");
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   return (
@@ -49,11 +82,8 @@ const LoginUser = () => {
             className="w-full px-4 py-3 bg-white rounded-lg transition-all duration-200 placeholder-gray-400 text-black shadow-sm"
           />
         </div>
-        <button
-        onClick={handleLogin}
-          className="px-3 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300  bg-[#043033] rounded-lg  focus:outline-none "
-        >
-          {loading ? "Signing In..." : "Sign In"}
+        <button onClick={handleLogin} disabled={loading}  className="px-3 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300  bg-[#043033] rounded-lg  focus:outline-none ">
+            {loading ? "Sending..." : "Login"}
         </button>
         <div className="flex flex-row justify-center align-center text-white">
           <p className="">We sign you up if you don&apos;t have an account? </p>
