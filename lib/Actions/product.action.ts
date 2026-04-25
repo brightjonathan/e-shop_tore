@@ -13,3 +13,26 @@ export const fetchProducts = async () => {
     }
     return data;
 }
+
+
+export const fetchProductById = async (id: string) => {
+     const supabase = await createClient();
+  try {
+    const { data: product, error } = await supabase
+      .from("products")
+      .select("*, category:categories(name)")
+     //.select("*,category:categories!fk_category(name)")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.log(error);
+      return null;
+    }
+
+    return product;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}

@@ -26,6 +26,6 @@ const Home = () => {
 
 export default Home;
 
-//stop at 1:04:00
+//stop at 1:20:00
 
 
