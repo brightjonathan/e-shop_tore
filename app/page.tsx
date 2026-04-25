@@ -1,3 +1,4 @@
+import Footer from "@/Component/Footer";
 import HeaderSlider from "@/Component/HeaderSlider";
 import HomeProduct from "@/Component/HomeProduct";
 import Navbar from "@/Component/Navbar";
@@ -19,6 +20,8 @@ const Home = () => {
 
         <HomeProduct products={allProducts} />
       </div>
+
+      <Footer/>
 
     </div>
   )

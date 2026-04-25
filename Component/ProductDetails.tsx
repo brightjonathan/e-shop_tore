@@ -3,9 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { assets } from "@/public/assets/assets";
+import Footer from "./Footer";
 
 
 const ProductDetails = ({ productdetails }: { productdetails: any }) => {
+
+const offerPrice = productdetails.price + (productdetails.price * 0.7); // Assuming offer price is 17% more than the original price
+
   return (
     <>
         <Navbar />
@@ -19,6 +23,7 @@ const ProductDetails = ({ productdetails }: { productdetails: any }) => {
                 className="w-full h-auto object-cover mix-blend-multiply"
                 width={1280}
                 height={720}
+                loading="eager"
               />
             </div>
           </div>
@@ -33,26 +38,31 @@ const ProductDetails = ({ productdetails }: { productdetails: any }) => {
                   className="h-4 w-4"
                   src={assets.star_icon}
                   alt="star_icon"
+                  loading="eager"
                 />
                 <Image
                   className="h-4 w-4"
                   src={assets.star_icon}
                   alt="star_icon"
+                  loading="eager"
                 />
                 <Image
                   className="h-4 w-4"
                   src={assets.star_icon}
                   alt="star_icon"
+                  loading="eager"
                 />
                 <Image
                   className="h-4 w-4"
                   src={assets.star_icon}
                   alt="star_icon"
+                  loading="eager"
                 />
                 <Image
                   className="h-4 w-4"
                   src={assets.star_dull_icon}
                   alt="star_dull_icon"
+                  loading="eager"
                 />
               </div>
               <p>(4.5)</p>
@@ -63,12 +73,12 @@ const ProductDetails = ({ productdetails }: { productdetails: any }) => {
                 {productdetails.price.toLocaleString("en-NG", {
                     minimumFractionDigits: 2,
                 })}
-              {/* <span className="text-base font-normal text-gray-800/60 line-through ml-2">
+              <span className="text-base font-normal text-gray-800/60 line-through ml-2">
                 &#8358;
-                {productdetails?.offer_price.toLocaleString("en-NG", {
+                {offerPrice.toLocaleString("en-NG", {
                     minimumFractionDigits: 2,
                 })}
-              </span> */}
+              </span>
             </p>
             <hr className="bg-gray-600 my-6" />
             <div className="overflow-x-auto">
@@ -121,7 +131,7 @@ const ProductDetails = ({ productdetails }: { productdetails: any }) => {
               </button>
               <Link
                 href='#'
-                className="w-full py-3.5 bg-[#043033] text-white hover:bg-black transition"
+                className="w-full py-3.5 bg-[#043033] text-white text-center hover:bg-black transition"
               >
                 Buy now
               </Link>
@@ -145,12 +155,16 @@ const ProductDetails = ({ productdetails }: { productdetails: any }) => {
                     className="object-cover w-full h-auto"
                     width={400}
                     height={400}
+                    loading="eager"
                   />
                 </div>
               ))}
             </div>
           </div>
         )}
+
+       <p className="mt-[5vh]"></p>
+        <Footer/>
     </>
   )
 }
