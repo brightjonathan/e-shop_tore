@@ -1,12 +1,10 @@
 "use client";
 
-import { login } from "@/lib/Actions/userAuth.action";
+import { useState } from "react";
+import { login, verifyToken } from "@/lib/Actions/userAuth.action";
 import { emailValidationSchema } from "@/lib/zodvalidation/Form_validation";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-import { useState } from "react";
 import toast from "react-hot-toast";
 
 
@@ -58,7 +56,70 @@ const LoginUser = () => {
 };
 
 
-  return (
+
+const handleSubmitToken = async () => {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("token", token);
+      const otpVerification = await verifyToken(formData);
+
+      if (otpVerification?.error) {
+        toast.error("Invalid token. Please try again.");
+        return;
+      }
+      if (otpVerification?.session) {
+        toast.success("You are now logged in!");
+        // setSession(otpVerification.session);
+        router.push("/");
+      }
+
+      // You can redirect the user to the dashboard or home page after successful login
+    } catch (error) {
+      console.error("Error submitting token:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  return tokenPart ? (
+   <>
+     <div className="bg-black ">
+      <section className="flex flex-col justify-center items-center h-screen gap-4  text-white pt-10 w-[80%] mx-auto ">
+        <div className="self-center">
+          <h1 className="text-4xl font-bold mb-4 max-md:text-xl">
+            Token From Your Email
+          </h1>
+          <p className="text-lg md:text-2xl max-md:text-sm  text-center text-slate-500">
+            Check the junk/spam mailbox too.
+          </p>
+        </div>
+
+        <div className="  px-4 sm:px-0">
+          <input
+            aria-label="Token"
+            placeholder="Enter Token"
+            className="w-full px-4 py-3 bg-white  rounded-lg transition-all duration-200 placeholder-gray-400  text-black  shadow-sm"
+            name="token"
+            type="text"
+            onChange={(e) => setToken(e.target.value)}
+          />
+
+          <button
+            onClick={handleSubmitToken}
+            disabled={loading}
+            className="px-3 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300  bg-[#043033] rounded-lg  focus:outline-none "
+            type="button"
+          >
+            {loading ? "submitting" : "Submit"}
+          </button>
+        </div>
+      </section>
+    </div>
+   </>
+  ) : (
     <div className="bg-black">
       <section className="flex flex-col justify-center h-screen items-center gap-6 text-white w-full px-4">
         {/* Logo */}

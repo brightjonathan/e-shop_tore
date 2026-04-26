@@ -18,6 +18,8 @@ const Navbar = () => {
 
       const checkIn = () => {
         setUserOpen((prev) => !prev);
+        console.log('texting');
+        
       };
 
   return (
@@ -57,12 +59,12 @@ const Navbar = () => {
             <Image src={assets.cart_icon} alt="cart"  />
           </Link>
 
-          <button
-            onClick={checkIn}
+          <Link
+          href={'/login'}
             className="flex items-center gap-2 hover:text-gray-400 transition"
           >
             <Image src={assets.user_icon} alt="user"  />
-          </button>
+          </Link>
         </ul>
 
        {/* for mobile view */}
@@ -74,19 +76,19 @@ const Navbar = () => {
           <button className="flex items-center gap-2 hover:text-gray-400 transition">
             <Image src={assets.cart_icon} alt="cart" className="w-6 h-6" />
           </button>
-          <button
-            onClick={checkIn}
+          <Link
+          href={'/login'}
             className="flex items-center gap-2 hover:text-gray-400 transition"
           >
             <Image src={assets.user_icon} alt="user" className="w-6 h-6" />
-          </button>
+          </Link>
 
           <HamX isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
       </div>
 
       {isOpen && (
-        <div className="md:hidden absolute w-[70%] h-full flex flex-col flex-full bg-black text-white top-[52px] right-0 z-10">
+        <div className="md:hidden absolute w-[70%] h-full flex flex-col flex-full bg-black text-white top-13 right-0 z-10">
           <div className="flex flex-col items-center gap-6  mt-16">
             <Link href="/" className="hover:text-gray-400 transition">
               Home

@@ -60,7 +60,7 @@ const Footer = () => {
         </div>
       </div>
       <p className="py-4 text-center text-xs md:text-sm text-white bg-black">
-        Copyright 2025 © Eldics.dev All Rights Reserved.
+        Copyright 2026 © e-shop store All Rights Reserved.
       </p>
     </footer>
   )
