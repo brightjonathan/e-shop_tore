@@ -130,7 +130,7 @@ const offerPrice = productdetails.price + (productdetails.price * 0.7); // Assum
                 Add to Cart
               </button>
               <Link
-                href='#'
+                href={`/buy-now/${productdetails.id}`}
                 className="w-full py-3.5 bg-[#043033] text-white text-center hover:bg-black transition"
               >
                 Buy now
