@@ -6,11 +6,14 @@ import { assets } from "@/public/assets/assets";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import HamX from "./HamX";
+import { useAppContext } from "@/context/AppContext";
+import { signOut } from "@/lib/Actions/userAuth.action";
 
 const Navbar = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [userOpen, setUserOpen] = useState(false);
+     const { session, setSession } = useAppContext();
      
       //for routing
       const router = useRouter();
@@ -18,13 +21,19 @@ const Navbar = () => {
 
       const checkIn = () => {
         setUserOpen((prev) => !prev);
-        console.log('texting');
-        
       };
 
+      
+  const handleSignOut = async () => {
+     await signOut();
+    setSession(null);
+    router.push("/");
+
+  };
+
   return (
-    <nav className="flex items-center justify-between px-6 md:px-16 lg:px-32 py-3 text-white bg-black">
-         <Link href="/">
+     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-32 py-3   text-white bg-black ">
+      <Link href="/">
         <h1 className="text-[#fce3c7]">e-shop Store</h1>
       </Link>
       <div className="flex items-center gap-6 lg:gap-8 max-md:hidden">
@@ -49,25 +58,24 @@ const Navbar = () => {
           </button>
 
           <button className="flex items-center gap-2 hover:text-gray-400 transition">
-            <Image src={assets.heart_icon} alt="favorite" className="w-4"  />
+            <Image src={assets.heart_icon} alt="favorite" className="w-4" />
           </button>
 
           <Link
             href={"/cart"}
             className="flex items-center gap-2 hover:text-gray-400 transition"
           >
-            <Image src={assets.cart_icon} alt="cart"  />
+            <Image src={assets.cart_icon} alt="cart" />
           </Link>
 
-          <Link
-          href={'/login'}
+          <button
+            onClick={checkIn}
             className="flex items-center gap-2 hover:text-gray-400 transition"
           >
-            <Image src={assets.user_icon} alt="user"  />
-          </Link>
+            <Image src={assets.user_icon} alt="user" />
+          </button>
         </ul>
-
-       {/* for mobile view */}
+        {/* for mobile view */}
         <div className=" md:hidden flex items-center justify-center gap-3">
           <button>
             <Image className="w-6 h-6" src={assets.search_icon} alt="search" />
@@ -76,15 +84,55 @@ const Navbar = () => {
           <button className="flex items-center gap-2 hover:text-gray-400 transition">
             <Image src={assets.cart_icon} alt="cart" className="w-6 h-6" />
           </button>
-          <Link
-          href={'/login'}
+          <button
+            onClick={checkIn}
             className="flex items-center gap-2 hover:text-gray-400 transition"
           >
             <Image src={assets.user_icon} alt="user" className="w-6 h-6" />
-          </Link>
+          </button>
 
           <HamX isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
+        {userOpen && (
+          <div className=" absolute w-87.5 h-50 flex flex-col flex-full bg-black text-white top-23 right-0 z-10 rounded-b-2xl max-md:top-12 md:top-12">
+            <div className="flex flex-row justify-center items-center">
+              {session ? (
+                <p className="text-[#fce3c7] mr-2">{session?.user.email}</p>
+              ) : (
+                <div>
+                  <Link
+                    href="/login"
+                    className="hover:text-gray-400 transition"
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {session && (
+              <div className="flex flex-col items-center gap-2  mt-2">
+                <Link
+                  href="/profile"
+                  className="hover:text-gray-400 transition"
+                >
+                  My Profile
+                </Link>
+                <Link href="/orders" className="hover:text-gray-400 transition">
+                  My Orders
+                </Link>
+                <Link
+                  href="/reviews"
+                  className="hover:text-gray-400 transition"
+                >
+                  My Reviews
+                </Link>
+
+                <button onClick={handleSignOut}>Sign Out</button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {isOpen && (
@@ -115,8 +163,6 @@ const Navbar = () => {
           </div>
         </div>
       )}
-        
-      
     </nav>
   )
 }

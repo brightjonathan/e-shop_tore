@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { login, verifyToken } from "@/lib/Actions/userAuth.action";
 import { emailValidationSchema } from "@/lib/zodvalidation/Form_validation";
+import { useAppContext } from "@/context/AppContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -16,6 +17,7 @@ const LoginUser = () => {
     const [loading, setLoading] = useState(false);
     const [tokenPart, setTokenPart] = useState(false);
     const [token, setToken] = useState("");
+    const { setSession } = useAppContext();
 
 
     const router = useRouter();
@@ -71,7 +73,7 @@ const handleSubmitToken = async () => {
       }
       if (otpVerification?.session) {
         toast.success("You are now logged in!");
-        // setSession(otpVerification.session);
+        setSession(otpVerification.session);
         router.push("/");
       }
 
